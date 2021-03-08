@@ -1,0 +1,12 @@
+samples: "samples.tsv"
+units: "units.tsv"
+
+reference:
+  adapter:
+    fwd: "AAGTCGGAGGCCAAGCGGTCTTAGGAAGACAA"
+    rev: "AAGTCGGATCGTAGCCATGTCGTTCTGTGAGCCAAGGAGTTG"
+  fasta: ".tests/integration/reference/Homo_sapiens_AADACL3_sequence.fa"
+
+tools:
+  fastp: "docker://marrip/fastp:0.21.0"
+  ubuntu: "docker://ubuntu:18.04"
