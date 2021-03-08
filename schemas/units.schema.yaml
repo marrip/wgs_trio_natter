@@ -1,0 +1,20 @@
+$schema: "http://json-schema.org/draft-04/schema#"
+description: row represents one dataset
+properties:
+  sample:
+    type: string
+    description: sample id
+  unit:
+    type: string
+    description: fastq file pair count
+  r1:
+    type: string
+    description: absolut path to R1 fastq file
+  r2:
+    type: string
+    description: absolut path to R2 fastq file
+required:
+  - sample
+  - unit
+  - r1
+  - r2
