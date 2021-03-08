@@ -1,2 +1,3 @@
-# wgs_trio_natter
-Germline WGS workflow to process trio samples
+# WGS-Trio-Natter :snake:
+
+Snakemake workflow to process WGS trio data from MGI instrument
