@@ -1,2 +1,2 @@
 sample	unit	r1	r2
-NA12878	1	.tests/integration/input/V000000001/L01/V000000001_L01_1_1.fq.gz	.tests/integration/input/V000000001/L01/V000000001_L01_1_2.fq.gz
+NA12878	1	input/V000000001/L01/V000000001_L01_1_1.fq.gz	input/V000000001/L01/V000000001_L01_1_2.fq.gz

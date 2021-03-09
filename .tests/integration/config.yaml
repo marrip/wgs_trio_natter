@@ -6,7 +6,7 @@ reference:
     fwd: "AAGTCGGAGGCCAAGCGGTCTTAGGAAGACAA"
     rev: "AAGTCGGATCGTAGCCATGTCGTTCTGTGAGCCAAGGAGTTG"
   fasta: "reference/Homo_sapiens_AADACL3_sequence.fa"
-  tests: "reference/known_indels.vcf"
+  sites: "reference/known_indels.vcf"
 
 tools:
   fastp: "docker://marrip/fastp:0.21.0"
