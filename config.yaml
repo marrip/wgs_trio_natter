@@ -6,6 +6,7 @@ reference:
     fwd: "AAGTCGGAGGCCAAGCGGTCTTAGGAAGACAA"
     rev: "AAGTCGGATCGTAGCCATGTCGTTCTGTGAGCCAAGGAGTTG"
   fasta: ""
+  sites: ""
 
 tools:
   fastp: "docker://marrip/fastp:0.21.0"
