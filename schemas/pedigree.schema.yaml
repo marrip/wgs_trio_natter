@@ -1,0 +1,20 @@
+$schema: "http://json-schema.org/draft-04/schema#"
+description: row represents one dataset
+properties:
+  trio:
+    type: string
+    description: trio id
+  p1:
+    type: string
+    description: first patient id
+  p2:
+    type: string
+    description: second patient id
+  p3:
+    type: string
+    description: third patient id
+required:
+  - trio
+  - p1
+  - p2
+  - p3

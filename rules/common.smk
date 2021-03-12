@@ -24,6 +24,13 @@ units = pd.read_table(config["units"], dtype=str).set_index(
 )
 validate(units, schema="../schemas/units.schema.yaml")
 
+### Read and validate pedigree file
+
+pedigree = pd.read_table(config["pedigree"], dtype=str).set_index(
+    ["trio"], drop=False
+)
+validate(pedigree, schema="../schemas/pedigree.schema.yaml")
+
 ### Set wildcard constraints
 
 
@@ -54,3 +61,45 @@ def get_fastq_rev(wildcards):
         sample=wildcards.sample,
         unit=units.loc[(wildcards.sample), ["unit"]].unit,
     )
+
+
+def get_gvcf_path(sample):
+    return "/".join([sample, "dbsnp", sample + ".g.vcf.gz"])
+
+
+def get_gvcf_trio(wildcards):
+    trio = pedigree.loc[(wildcards.trio), ["p1", "p2", "p3"]].dropna()
+    return {
+        "gvcf1": get_gvcf_path(trio.p1),
+        "gvcf1idx": get_gvcf_path(trio.p1) + ".tbi",
+        "gvcf2": get_gvcf_path(trio.p2),
+        "gvcf2idx": get_gvcf_path(trio.p2) + ".tbi",
+        "gvcf3": get_gvcf_path(trio.p3),
+        "gvcf3idx": get_gvcf_path(trio.p3) + ".tbi"
+    }
+
+
+def get_sample_results(samples, results):
+    suffixes = {
+        "mosdepth": [
+            "mosdepth.global.dist.txt",
+            "mosdepth.region.dist.txt",
+            "mosdepth.summary.txt",
+            "regions.bed.gz",
+            "regions.bed.gz.csi",
+        ],
+        "haplotypecaller": [
+            "variant_calling_detail_metrics",
+            "variant_calling_summary_metrics",
+        ],
+    }
+    for key in suffixes.keys():
+        results = results + expand("{sample}/{tool}/{sample}.{suffix}", sample=samples, tool=key, suffix=suffixes[key])
+    return results
+    
+
+def get_results(wildcards):
+    results = expand("{trio}/trio_filter_gvcf/{trio}.g.vcf", trio=pedigree.index)
+    results = results + expand("{sample}/fastqc", sample=samples.index)
+    results = get_sample_results(samples.index,results)
+    return results

@@ -1,2 +1,5 @@
+**/.cache
+**/.java
 **/.snakemake
-**/NA12878
+**/NA12878_?
+rules/vqsr.smk

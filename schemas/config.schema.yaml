@@ -6,6 +6,10 @@ properties:
     type: string
   units:
     type: string
+  pedigree:
+    type: string
+  filter:
+    type: string
   reference:
     type: object
     properties:
@@ -21,18 +25,38 @@ properties:
           - rev
       fasta:
         type: string
+      dict:
+        type: string
+      sites:
+        type: string
+      dbsnp:
+        type: string
+      loci:
+        type: array
     required:
       - adapter
       - fasta
+      - dict
+      - sites
+      - dbsnp
+      - loci
   tools:
     type: object
     properties:
+      common:
+        type: string
       fastp:
+        type: string
+      fastqc:
+        type: string
+      gatk:
         type: string
       ubuntu:
         type: string
   required:
     - samples
     - units
+    - pedigree
+    - filter
     - reference
     - tools
