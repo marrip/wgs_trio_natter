@@ -1,13 +1,23 @@
 samples: "samples.tsv"
 units: "units.tsv"
+pedigree: "pedigree.tsv"
+filter: "input/filter_loci.bed"
 
 reference:
   adapter:
     fwd: "AAGTCGGAGGCCAAGCGGTCTTAGGAAGACAA"
     rev: "AAGTCGGATCGTAGCCATGTCGTTCTGTGAGCCAAGGAGTTG"
   fasta: "reference/Homo_sapiens_AADACL3_sequence.fa"
+  dict: "reference/Homo_sapiens_AADACL3_sequence.dict"
   sites: "reference/known_indels.vcf"
+  dbsnp: "reference/dbsnp138.vcf.gz"
+  loci: 
+  - "1"
 
 tools:
+  common: "docker://marrip/common:1.0.0"
   fastp: "docker://marrip/fastp:0.21.0"
+  fastqc: "docker://marrip/fastqc:0.11.9"
+  gatk: "docker://broadinstitute/gatk:4.1.9.0"
+  mosdepth: "docker://marrip/mosdepth:v0.3.1"
   ubuntu: "docker://ubuntu:18.04"
