@@ -2,4 +2,6 @@
 **/.java
 **/.snakemake
 **/NA12878_?
+**/T1
+**/slurm*
 rules/vqsr.smk

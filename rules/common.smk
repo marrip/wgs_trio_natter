@@ -64,7 +64,7 @@ def get_fastq_rev(wildcards):
 
 
 def get_gvcf_path(sample):
-    return "/".join([sample, "dbsnp", sample + ".g.vcf.gz"])
+    return "{sample}/dbsnp/{sample}.g.vcf.gz".format(sample=sample)
 
 
 def get_gvcf_trio(wildcards):
