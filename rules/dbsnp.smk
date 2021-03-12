@@ -3,7 +3,7 @@ rule dbsnp:
         vcf="{sample}/haplotypecaller/{sample}.g.vcf.gz",
         dbsnp=config["reference"]["dbsnp"],
     output:
-        "{sample}/dbsnp/{sample}.g.vcf.gz"
+        "{sample}/dbsnp/{sample}.g.vcf.gz",
     log:
         "{sample}/dbsnp/dbsnp.log",
     conda:
@@ -17,11 +17,12 @@ rule dbsnp:
         "--in-dbsnp-file {input.dbsnp} "
         "--out-vcf {output} &> {log}"
 
+
 rule indexgvcf:
     input:
-        "{sample}/dbsnp/{sample}.g.vcf.gz"
+        "{sample}/dbsnp/{sample}.g.vcf.gz",
     output:
-        "{sample}/dbsnp/{sample}.g.vcf.gz.tbi"
+        "{sample}/dbsnp/{sample}.g.vcf.gz.tbi",
     log:
         "{sample}/dbsnp/indexgvcf.log",
     conda:

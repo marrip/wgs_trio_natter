@@ -26,9 +26,7 @@ validate(units, schema="../schemas/units.schema.yaml")
 
 ### Read and validate pedigree file
 
-pedigree = pd.read_table(config["pedigree"], dtype=str).set_index(
-    ["trio"], drop=False
-)
+pedigree = pd.read_table(config["pedigree"], dtype=str).set_index(["trio"], drop=False)
 validate(pedigree, schema="../schemas/pedigree.schema.yaml")
 
 ### Set wildcard constraints
@@ -75,7 +73,7 @@ def get_gvcf_trio(wildcards):
         "gvcf2": get_gvcf_path(trio.p2),
         "gvcf2idx": get_gvcf_path(trio.p2) + ".tbi",
         "gvcf3": get_gvcf_path(trio.p3),
-        "gvcf3idx": get_gvcf_path(trio.p3) + ".tbi"
+        "gvcf3idx": get_gvcf_path(trio.p3) + ".tbi",
     }
 
 
@@ -94,12 +92,17 @@ def get_sample_results(samples, results):
         ],
     }
     for key in suffixes.keys():
-        results = results + expand("{sample}/{tool}/{sample}.{suffix}", sample=samples, tool=key, suffix=suffixes[key])
+        results = results + expand(
+            "{sample}/{tool}/{sample}.{suffix}",
+            sample=samples,
+            tool=key,
+            suffix=suffixes[key],
+        )
     return results
-    
+
 
 def get_results(wildcards):
     results = expand("{trio}/trio_filter_gvcf/{trio}.g.vcf", trio=pedigree.index)
     results = results + expand("{sample}/fastqc", sample=samples.index)
-    results = get_sample_results(samples.index,results)
+    results = get_sample_results(samples.index, results)
     return results

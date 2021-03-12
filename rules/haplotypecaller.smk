@@ -20,6 +20,7 @@ rule haplotypecaller:
         "--gvcf "
         "--out-variants {output} &> {log}"
 
+
 rule collect_variant_calling_metrics:
     input:
         vcf="{sample}/haplotypecaller/{sample}.g.vcf.gz",
