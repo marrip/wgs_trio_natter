@@ -16,6 +16,7 @@ rule fq2bam:
         "pbrun fq2bam "
         "--ref {input.ref} "
         "--in-fq {input.fwd} {input.rev} "
+        "--read-group-sm {wildcards.sample} "
         "--knownSites {input.sites} "
         "--out-bam {output.bam} "
         "--out-recal-file {output.recal} "
