@@ -11,8 +11,10 @@ reference:
   dict: "reference/Homo_sapiens_AADACL3_sequence.dict"
   sites: "reference/known_indels.vcf"
   dbsnp: "reference/dbsnp138.vcf.gz"
-  loci: 
-  - "1"
+
+snpeff:
+  cfile: "reference/snpEff/snpEff.config"
+  db: "test"
 
 tools:
   common: "docker://marrip/common:1.0.0"
@@ -20,4 +22,5 @@ tools:
   fastqc: "docker://marrip/fastqc:0.11.9"
   gatk: "docker://broadinstitute/gatk:4.1.9.0"
   mosdepth: "docker://marrip/mosdepth:v0.3.1"
+  snpeff: "docker://marrip/snpeff:5.0c"
   ubuntu: "docker://ubuntu:18.04"

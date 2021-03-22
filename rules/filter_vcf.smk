@@ -1,15 +1,15 @@
-rule trio_filter_gvcf:
+rule filter_vcf:
     input:
-        vcf="{trio}/trio_combine_gvcf/{trio}.g.vcf",
+        vcf="{sample}/haplotypecaller/{sample}.vcf",
         bed=config["filter"],
     output:
-        "{trio}/trio_filter_gvcf/{trio}.g.vcf",
+        "{sample}/filter_vcf/{sample}.vcf",
     log:
-        "{trio}/trio_filter_gvcf/trio_filter_gvcf.log",
+        "{sample}/filter_vcf/filter_vcf.log",
     container:
         config["tools"]["common"]
     message:
-        "{rule}: Filter trio gvcf using bed file"
+        "{rule}: Filter vcf using bed file"
     shell:
         "(bedtools intersect "
         "-header "

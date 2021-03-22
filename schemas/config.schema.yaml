@@ -31,15 +31,22 @@ properties:
         type: string
       dbsnp:
         type: string
-      loci:
-        type: array
     required:
       - adapter
       - fasta
       - dict
       - sites
       - dbsnp
-      - loci
+  snpeff:
+    type: object
+    properties:
+      cfile:
+        type: string
+      db:
+        type: string
+    required:
+      - cfile
+      - db
   tools:
     type: object
     properties:
@@ -50,6 +57,10 @@ properties:
       fastqc:
         type: string
       gatk:
+        type: string
+      mosdepth:
+        type: string
+      snpeff:
         type: string
       ubuntu:
         type: string

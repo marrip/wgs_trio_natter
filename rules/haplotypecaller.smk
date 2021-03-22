@@ -4,9 +4,30 @@ rule haplotypecaller:
         recal="{sample}/fq2bam/base_recal.txt",
         ref=config["reference"]["fasta"],
     output:
-        "{sample}/haplotypecaller/{sample}.g.vcf.gz",
+        "{sample}/haplotypecaller/{sample}.vcf",
     log:
         "{sample}/haplotypecaller/haplotypecaller.log",
+    conda:
+        "../envs/parabricks.yaml"
+    threads: 40
+    message:
+        "{rule}: Call variants in {wildcards.sample} using pbrun haplotypecaller"
+    shell:
+        "pbrun haplotypecaller "
+        "--in-bam {input.bam} "
+        "--in-recal-file {input.recal} "
+        "--ref {input.ref} "
+        "--out-variants {output} &> {log}"
+
+rule haplotypecaller_gvcf:
+    input:
+        bam="{sample}/fq2bam/duplicates_marked.bam",
+        recal="{sample}/fq2bam/base_recal.txt",
+        ref=config["reference"]["fasta"],
+    output:
+        "{sample}/haplotypecaller/{sample}.g.vcf.gz",
+    log:
+        "{sample}/haplotypecaller/haplotypecaller_gvcf.log",
     conda:
         "../envs/parabricks.yaml"
     threads: 40

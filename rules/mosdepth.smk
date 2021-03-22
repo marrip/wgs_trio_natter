@@ -11,10 +11,11 @@ rule mosdepth:
         "{sample}/mosdepth/mosdepth.log",
     container:
         config["tools"]["mosdepth"]
-    threads: 40
+    threads: 4
     message:
         "{rule}: Calculating coverage using mosdepth"
     shell:
+        "touch {input}.bai && "
         "mosdepth "
         "-n "
         "-t {threads} "

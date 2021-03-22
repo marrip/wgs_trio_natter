@@ -41,7 +41,7 @@ wildcard_constraints:
 
 
 def get_fastq(wildcards):
-    fastqs = units.loc[(wildcards.sample, wildcards.unit), ["r1", "r2"]].dropna()
+    fastqs = units.loc[(wildcards.sample), ["r1", "r2"]].dropna()
     return {"fwd": fastqs.r1, "rev": fastqs.r2}
 
 
@@ -62,18 +62,18 @@ def get_fastq_rev(wildcards):
 
 
 def get_gvcf_path(sample):
-    return "{sample}/dbsnp/{sample}.g.vcf.gz".format(sample=sample)
+    return "{sample}/haplotypecaller/{sample}.g.vcf.gz".format(sample=sample)
 
 
 def get_gvcf_trio(wildcards):
     trio = pedigree.loc[(wildcards.trio), ["p1", "p2", "p3"]].dropna()
     return {
         "gvcf1": get_gvcf_path(trio.p1),
-        "gvcf1idx": get_gvcf_path(trio.p1) + ".tbi",
+        #"gvcf1idx": get_gvcf_path(trio.p1) + ".tbi",
         "gvcf2": get_gvcf_path(trio.p2),
-        "gvcf2idx": get_gvcf_path(trio.p2) + ".tbi",
+        #"gvcf2idx": get_gvcf_path(trio.p2) + ".tbi",
         "gvcf3": get_gvcf_path(trio.p3),
-        "gvcf3idx": get_gvcf_path(trio.p3) + ".tbi",
+        #"gvcf3idx": get_gvcf_path(trio.p3) + ".tbi"
     }
 
 
@@ -87,9 +87,13 @@ def get_sample_results(samples, results):
             "regions.bed.gz.csi",
         ],
         "haplotypecaller": [
+            "vcf",
             "variant_calling_detail_metrics",
             "variant_calling_summary_metrics",
         ],
+        "filter_vcf": [
+            "vcf",
+        ]
     }
     for key in suffixes.keys():
         results = results + expand(
@@ -102,7 +106,7 @@ def get_sample_results(samples, results):
 
 
 def get_results(wildcards):
-    results = expand("{trio}/trio_filter_gvcf/{trio}.g.vcf", trio=pedigree.index)
+    results = expand("{trio}/snpeff/{trio}_annotated.{ext}", trio=pedigree.index, ext=["vcf", "html"])
     results = results + expand("{sample}/fastqc", sample=samples.index)
     results = get_sample_results(samples.index, results)
     return results

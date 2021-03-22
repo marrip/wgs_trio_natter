@@ -1,16 +1,33 @@
-rule fastp:
+rule combine_fq:
     input:
         unpack(get_fastq),
     output:
-        fwd="{sample}/fastp/{unit}_R1.fq.gz",
-        rev="{sample}/fastp/{unit}_R2.fq.gz",
-        json="{sample}/fastp/{unit}.json",
-        html="{sample}/fastp/{unit}.html",
+        fwd="{sample}/combined_reads/R1.fq.gz",
+        rev="{sample}/combined_reads/R2.fq.gz",
+    log:
+        "{sample}/combined_reads/combine_fq.log",
+    container:
+        config["tools"]["ubuntu"]
+    message:
+        "{rule}: Combine fastq files of same sample"
+    shell:
+        "cat {input.fwd} > {output.fwd} && "
+        "cat {input.rev} > {output.rev} | tee {log}"
+
+rule fastp:
+    input:
+        fwd="{sample}/combined_reads/R1.fq.gz",
+        rev="{sample}/combined_reads/R2.fq.gz",
+    output:
+        fwd="{sample}/fastp/R1.fq.gz",
+        rev="{sample}/fastp/R2.fq.gz",
+        json="{sample}/fastp/{sample}.json",
+        html="{sample}/fastp/{sample}.html",
     params:
         fwd=config["reference"]["adapter"]["fwd"],
         rev=config["reference"]["adapter"]["rev"],
     log:
-        "{sample}/fastp/{unit}.log",
+        "{sample}/fastp/{sample}.log",
     container:
         config["tools"]["fastp"]
     threads: 16
@@ -28,21 +45,3 @@ rule fastp:
         "--json {output.json} "
         "--html {output.html} "
         "-w {threads} &> {log}"
-
-
-rule combine_fq:
-    input:
-        fwd=get_fastq_fwd,
-        rev=get_fastq_rev,
-    output:
-        fwd="{sample}/fastp/R1.fq.gz",
-        rev="{sample}/fastp/R2.fq.gz",
-    log:
-        "{sample}/fastp/combine_fq.log",
-    container:
-        config["tools"]["ubuntu"]
-    message:
-        "{rule}: Combine fastq files of same sample"
-    shell:
-        "cat {input.fwd} > {output.fwd} && "
-        "cat {input.rev} > {output.rev} | tee {log}"
