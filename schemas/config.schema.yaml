@@ -37,7 +37,6 @@ properties:
       - dict
       - sites
       - dbsnp
-      - loci
   snpeff:
     type: object
     properties:
