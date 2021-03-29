@@ -11,6 +11,7 @@ reference:
   dict: ""
   sites: ""
   dbsnp: ""
+  pon: ""
 
 snpeff:
   cfile: ""

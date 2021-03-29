@@ -11,6 +11,7 @@ reference:
   dict: "reference/Homo_sapiens_AADACL3_sequence.dict"
   sites: "reference/known_indels.vcf"
   dbsnp: "reference/dbsnp138.vcf.gz"
+  pon: ""
 
 snpeff:
   cfile: "reference/snpEff/snpEff.config"
