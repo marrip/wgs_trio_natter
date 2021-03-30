@@ -69,30 +69,40 @@ def get_gvcf_trio(wildcards):
     trio = pedigree.loc[(wildcards.trio), ["p1", "p2", "p3"]].dropna()
     return {
         "gvcf1": get_gvcf_path(trio.p1),
-        #"gvcf1idx": get_gvcf_path(trio.p1) + ".tbi",
         "gvcf2": get_gvcf_path(trio.p2),
-        #"gvcf2idx": get_gvcf_path(trio.p2) + ".tbi",
         "gvcf3": get_gvcf_path(trio.p3),
-        #"gvcf3idx": get_gvcf_path(trio.p3) + ".tbi"
+    }
+
+
+def get_bam_path(sample):
+    return "{sample}/fq2bam/duplicates_marked.bam".format(sample=sample)
+
+
+def get_bam_trio(wildcards):
+    trio = pedigree.loc[(wildcards.trio), ["p1", "p2", "p3"]].dropna()
+    return {
+        "bam1": get_bam_path(trio.p1),
+        "bam2": get_bam_path(trio.p2),
+        "bam3": get_bam_path(trio.p3),
     }
 
 
 def get_sample_results(samples, results):
     suffixes = {
-        "mosdepth": [
-            "mosdepth.global.dist.txt",
-            "mosdepth.region.dist.txt",
-            "mosdepth.summary.txt",
-            "regions.bed.gz",
-            "regions.bed.gz.csi",
+        "panel_filter_vcf": [
+            "vcf",
         ],
         "haplotypecaller": [
             "vcf",
             "variant_calling_detail_metrics",
             "variant_calling_summary_metrics",
         ],
-        "filter_vcf": [
-            "vcf",
+        "mosdepth": [
+            "mosdepth.global.dist.txt",
+            "mosdepth.region.dist.txt",
+            "mosdepth.summary.txt",
+            "regions.bed.gz",
+            "regions.bed.gz.csi",
         ]
     }
     for key in suffixes.keys():
@@ -107,6 +117,7 @@ def get_sample_results(samples, results):
 
 def get_results(wildcards):
     results = expand("{trio}/snpeff/{trio}_annotated.{ext}", trio=pedigree.index, ext=["vcf", "html"])
+    results = expand("{trio}/manta/results/variants/diploidSV.vcf.gz", trio=pedigree.index)
     results = results + expand("{sample}/fastqc", sample=samples.index)
     results = get_sample_results(samples.index, results)
     return results

@@ -19,6 +19,7 @@ rule haplotypecaller:
         "--ref {input.ref} "
         "--out-variants {output} &> {log}"
 
+
 rule haplotypecaller_gvcf:
     input:
         bam="{sample}/fq2bam/duplicates_marked.bam",
