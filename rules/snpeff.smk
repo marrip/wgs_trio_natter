@@ -8,7 +8,7 @@ rule snpeff:
     params:
         config["snpeff"]["db"],
     log:
-        "{trio}/snpeff/snpeff.log",
+        "logs/snpeff_{trio}.log",
     container:
         config["tools"]["snpeff"]
     message:

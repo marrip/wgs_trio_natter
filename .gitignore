@@ -5,3 +5,4 @@
 **/T1
 **/slurm*
 rules/vqsr.smk
+rules/indelible.smk

@@ -5,7 +5,7 @@ rule fastqc:
     output:
         directory("{sample}/fastqc"),
     log:
-        "{sample}/fastqc/fastqc.log",
+        "logs/fastqc_{sample}.log",
     container:
         config["tools"]["fastqc"]
     threads: 2

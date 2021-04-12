@@ -6,7 +6,7 @@ rule haplotypecaller:
     output:
         "{sample}/haplotypecaller/{sample}.vcf",
     log:
-        "{sample}/haplotypecaller/haplotypecaller.log",
+        "logs/haplotypecaller_{sample}.log",
     conda:
         "../envs/parabricks.yaml"
     threads: 40
@@ -19,6 +19,7 @@ rule haplotypecaller:
         "--ref {input.ref} "
         "--out-variants {output} &> {log}"
 
+
 rule haplotypecaller_gvcf:
     input:
         bam="{sample}/fq2bam/duplicates_marked.bam",
@@ -27,7 +28,7 @@ rule haplotypecaller_gvcf:
     output:
         "{sample}/haplotypecaller/{sample}.g.vcf.gz",
     log:
-        "{sample}/haplotypecaller/haplotypecaller_gvcf.log",
+        "logs/haplotypecaller_gvcf_{sample}.log",
     conda:
         "../envs/parabricks.yaml"
     threads: 40
@@ -51,7 +52,7 @@ rule collect_variant_calling_metrics:
         "{sample}/haplotypecaller/{sample}.variant_calling_detail_metrics",
         "{sample}/haplotypecaller/{sample}.variant_calling_summary_metrics",
     log:
-        "{sample}/haplotypecaller/collect_variant_calling_metrics.log",
+        "logs/collect_variant_calling_metrics_{sample}.log",
     container:
         config["tools"]["gatk"]
     message:

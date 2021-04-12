@@ -12,15 +12,26 @@ reference:
   sites: "reference/known_indels.vcf"
   dbsnp: "reference/dbsnp138.vcf.gz"
 
+haplotypecaller:
+  pon: ""
+
+manta:
+  pon: ""
+
 snpeff:
   cfile: "reference/snpEff/snpEff.config"
   db: "test"
+
+tiddit:
+  pon: ""
 
 tools:
   common: "docker://marrip/common:1.0.0"
   fastp: "docker://marrip/fastp:0.21.0"
   fastqc: "docker://marrip/fastqc:0.11.9"
   gatk: "docker://broadinstitute/gatk:4.1.9.0"
+  manta: "docker://marrip/manta:v1.6.0"
   mosdepth: "docker://marrip/mosdepth:v0.3.1"
   snpeff: "docker://marrip/snpeff:5.0c"
+  tiddit: "docker://marrip/tiddit:2.12.1"
   ubuntu: "docker://ubuntu:18.04"

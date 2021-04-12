@@ -45,22 +45,6 @@ def get_fastq(wildcards):
     return {"fwd": fastqs.r1, "rev": fastqs.r2}
 
 
-def get_fastq_fwd(wildcards):
-    return expand(
-        "{sample}/fastp/{unit}_R1.fq.gz",
-        sample=wildcards.sample,
-        unit=units.loc[(wildcards.sample), ["unit"]].unit,
-    )
-
-
-def get_fastq_rev(wildcards):
-    return expand(
-        "{sample}/fastp/{unit}_R2.fq.gz",
-        sample=wildcards.sample,
-        unit=units.loc[(wildcards.sample), ["unit"]].unit,
-    )
-
-
 def get_gvcf_path(sample):
     return "{sample}/haplotypecaller/{sample}.g.vcf.gz".format(sample=sample)
 
@@ -69,16 +53,21 @@ def get_gvcf_trio(wildcards):
     trio = pedigree.loc[(wildcards.trio), ["p1", "p2", "p3"]].dropna()
     return {
         "gvcf1": get_gvcf_path(trio.p1),
-        #"gvcf1idx": get_gvcf_path(trio.p1) + ".tbi",
         "gvcf2": get_gvcf_path(trio.p2),
-        #"gvcf2idx": get_gvcf_path(trio.p2) + ".tbi",
         "gvcf3": get_gvcf_path(trio.p3),
-        #"gvcf3idx": get_gvcf_path(trio.p3) + ".tbi"
     }
 
 
 def get_sample_results(samples, results):
     suffixes = {
+        "haplotypecaller": [
+            "panel.vcf",
+            "variant_calling_detail_metrics",
+            "variant_calling_summary_metrics",
+        ],
+        "manta": [
+            "panel.vcf",
+        ],
         "mosdepth": [
             "mosdepth.global.dist.txt",
             "mosdepth.region.dist.txt",
@@ -86,14 +75,9 @@ def get_sample_results(samples, results):
             "regions.bed.gz",
             "regions.bed.gz.csi",
         ],
-        "haplotypecaller": [
-            "vcf",
-            "variant_calling_detail_metrics",
-            "variant_calling_summary_metrics",
+        "tiddit": [
+            "panel.vcf",
         ],
-        "filter_vcf": [
-            "vcf",
-        ]
     }
     for key in suffixes.keys():
         results = results + expand(

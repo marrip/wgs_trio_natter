@@ -5,7 +5,7 @@ rule trio_combine_gvcf:
     output:
         "{trio}/trio_combine_gvcf/{trio}.g.vcf",
     log:
-        "{trio}/trio_combine_gvcf/trio_combine_gvcf.log",
+        "logs/trio_combine_gvcf_{trio}.log",
     conda:
         "../envs/parabricks.yaml"
     threads: 40

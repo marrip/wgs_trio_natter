@@ -5,7 +5,7 @@ rule combine_fq:
         fwd="{sample}/combined_reads/R1.fq.gz",
         rev="{sample}/combined_reads/R2.fq.gz",
     log:
-        "{sample}/combined_reads/combine_fq.log",
+        "logs/combine_fq_{sample}.log",
     container:
         config["tools"]["ubuntu"]
     message:
@@ -27,7 +27,7 @@ rule fastp:
         fwd=config["reference"]["adapter"]["fwd"],
         rev=config["reference"]["adapter"]["rev"],
     log:
-        "{sample}/fastp/{sample}.log",
+        "logs/fastp_{sample}.log",
     container:
         config["tools"]["fastp"]
     threads: 16

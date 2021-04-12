@@ -37,6 +37,20 @@ properties:
       - dict
       - sites
       - dbsnp
+  haplotypecaller:
+    type: object
+    properties:
+      pon:
+        type: string
+    required:
+      - pon
+  manta:
+    type: object
+    properties:
+      pon:
+        type: string
+    required:
+      - pon
   snpeff:
     type: object
     properties:
@@ -47,6 +61,13 @@ properties:
     required:
       - cfile
       - db
+  tiddit:
+    type: object
+    properties:
+      pon:
+        type: string
+    required:
+      - pon
   tools:
     type: object
     properties:
@@ -58,9 +79,13 @@ properties:
         type: string
       gatk:
         type: string
+      manta:
+        type: string
       mosdepth:
         type: string
       snpeff:
+        type: string
+      tiddit:
         type: string
       ubuntu:
         type: string
