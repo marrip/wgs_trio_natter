@@ -1,33 +1,36 @@
 rule config_manta:
     input:
-        unpack(get_gvcf_trio),
+        bam="{sample}/fq2bam/duplicates_marked.bam",
         ref=config["reference"]["fasta"],
     output:
-        "{trio}/manta/runWorkflow.py",
+        "{sample}/manta/runWorkflow.py",
     log:
-        "{trio}/manta/config_manta.log",
+        "logs/config_manta_{sample}.log",
     container:
         config["tools"]["manta"]
     message:
         "{rule}: Generate Manta run workflow script"
     shell:
         "configManta.py "
-        "--bam={input.bam1} "
-        "--bam={input.bam2} "
-        "--bam={input.bam3} "
+        "--bam={input.bam} "
         "--referenceFasta={input.ref} "
-        "--runDir={wildcards.trio}/manta &> {log}"
+        "--runDir={wildcards.sample}/manta &> {log}"
 
 
 rule manta:
     input:
-        unpack(get_gvcf_trio),
+        bam="{sample}/fq2bam/duplicates_marked.bam",
         ref=config["reference"]["fasta"],
-        script="{trio}/manta/runWorkflow.py",
+        script="{sample}/manta/runWorkflow.py",
     output:
-        "{trio}/manta/results/variants/diploidSV.vcf.gz",
+        "{sample}/manta/results/variants/candidateSmallIndels.vcf.gz",
+        "{sample}/manta/results/variants/candidateSmallIndels.vcf.gz.tbi",
+        "{sample}/manta/results/variants/candidateSV.vcf.gz",
+        "{sample}/manta/results/variants/candidateSV.vcf.gz.tbi",
+        "{sample}/manta/results/variants/diploidSV.vcf.gz",
+        "{sample}/manta/results/variants/diploidSV.vcf.gz.tbi",
     log:
-        "{trio}/manta/manta.log",
+        "logs/manta_{sample}.log",
     container:
         config["tools"]["manta"]
     message:
@@ -37,3 +40,19 @@ rule manta:
         "{input.script} "
         "-j {threads} "
         "-g unlimited &> {log}"
+
+
+rule prep_manta_vcf:
+    input:
+        "{sample}/manta/results/variants/diploidSV.vcf.gz",
+    output:
+        "{sample}/manta/{sample}.vcf",
+    log:
+        "logs/prep_manta_vcf_{sample}.log",
+    container:
+        config["tools"]["ubuntu"]
+    message:
+        "{rule}: Copy and unzip manta vcf"
+    shell:
+        "cp {input} {output}.gz &> {log} && "
+        "gunzip {output}.gz &>> {log}"
