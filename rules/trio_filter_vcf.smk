@@ -1,11 +1,11 @@
 rule trio_pon_filter_vcf:
     input:
         vcf="{trio}/genotype_gvcfs/{trio}.vcf.gz",
-        bed=config["reference"]["pon"],
+        bed=config["haplotypecaller"]["pon"],
     output:
         "{trio}/trio_pon_filter_vcf/{trio}.vcf",
     log:
-        "{trio}/trio_pon_filter_vcf/trio_pon_filter_vcf.log",
+        "logs/trio_pon_filter_vcf_{trio}.log",
     container:
         config["tools"]["common"]
     message:
@@ -14,7 +14,7 @@ rule trio_pon_filter_vcf:
         "(bedtools intersect "
         "-v "
         "-header "
-        "-f 0.25 "
+        "-f 0.95 "
         "-a {input.vcf} -b {input.bed} > {output}) &> {log}"
 
 
@@ -25,7 +25,7 @@ rule trio_panel_filter_vcf:
     output:
         "{trio}/trio_panel_filter_vcf/{trio}.vcf",
     log:
-        "{trio}/trio_panel_filter_vcf/trio_panel_filter_vcf.log",
+        "logs/trio_panel_filter_vcf_{trio}.log",
     container:
         config["tools"]["common"]
     message:

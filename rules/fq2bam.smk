@@ -8,7 +8,7 @@ rule fq2bam:
         bam="{sample}/fq2bam/duplicates_marked.bam",
         recal="{sample}/fq2bam/base_recal.txt",
     log:
-        "{sample}/fq2bam/fq2bam.log",
+        "logs/fq2bam_{sample}.log",
     conda:
         "../envs/parabricks.yaml"
     threads: 40

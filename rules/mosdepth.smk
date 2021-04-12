@@ -8,7 +8,7 @@ rule mosdepth:
         "{sample}/mosdepth/{sample}.regions.bed.gz",
         "{sample}/mosdepth/{sample}.regions.bed.gz.csi",
     log:
-        "{sample}/mosdepth/mosdepth.log",
+        "logs/mosdepth_{sample}.log",
     container:
         config["tools"]["mosdepth"]
     threads: 4

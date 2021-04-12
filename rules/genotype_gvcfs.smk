@@ -5,7 +5,7 @@ rule genotype_gvcfs:
     output:
         "{trio}/genotype_gvcfs/{trio}.vcf.gz",
     log:
-        "{trio}/genotype_gvcfs/genotype_gvcfs.log",
+        "logs/genotype_gvcfs_{trio}.log",
     container:
         config["tools"]["gatk"]
     message:
