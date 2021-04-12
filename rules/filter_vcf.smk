@@ -1,35 +1,35 @@
 rule pon_filter_vcf:
     input:
-        vcf="{sample}/haplotypecaller/{sample}.vcf",
-        bed=config["reference"]["pon"],
+        vcf="{sample}/{tool}/{sample}.vcf",
+        bed=lambda wildcards: config[wildcards.tool]["pon"],
     output:
-        "{sample}/pon_filter_vcf/{sample}.vcf",
+        "{sample}/{tool}/{sample}.pon.vcf",
     log:
-        "{sample}/pon_filter_vcf/pon_filter_vcf.log",
+        "logs/pon_filter_vcf_{tool}_{sample}.log",
     container:
         config["tools"]["common"]
     message:
-        "{rule}: Filter vcf using PON bed file"
+        "{rule}: Filter {wildcards.sample} vcf using {input.bed}"
     shell:
         "(bedtools intersect "
         "-v "
         "-header "
-        "-f 0.25 "
+        "-f 0.95 "
         "-a {input.vcf} -b {input.bed} > {output}) &> {log}"
 
 
 rule panel_filter_vcf:
     input:
-        vcf="{sample}/pon_filter_vcf/{sample}.vcf",
+        vcf="{sample}/{tool}/{sample}.pon.vcf",
         bed=config["filter"],
     output:
-        "{sample}/panel_filter_vcf/{sample}.vcf",
+        "{sample}/{tool}/{sample}.panel.vcf",
     log:
-        "{sample}/panel_filter_vcf/panel_filter_vcf.log",
+        "logs/panel_filter_vcf_{tool}_{sample}.log",
     container:
         config["tools"]["common"]
     message:
-        "{rule}: Filter vcf using panel bed file"
+        "{rule}: Filter {wildcards.sample} vcf using {input.bed}"
     shell:
         "(bedtools intersect "
         "-header "
