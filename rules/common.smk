@@ -45,22 +45,6 @@ def get_fastq(wildcards):
     return {"fwd": fastqs.r1, "rev": fastqs.r2}
 
 
-def get_fastq_fwd(wildcards):
-    return expand(
-        "{sample}/fastp/{unit}_R1.fq.gz",
-        sample=wildcards.sample,
-        unit=units.loc[(wildcards.sample), ["unit"]].unit,
-    )
-
-
-def get_fastq_rev(wildcards):
-    return expand(
-        "{sample}/fastp/{unit}_R2.fq.gz",
-        sample=wildcards.sample,
-        unit=units.loc[(wildcards.sample), ["unit"]].unit,
-    )
-
-
 def get_gvcf_path(sample):
     return "{sample}/haplotypecaller/{sample}.g.vcf.gz".format(sample=sample)
 
@@ -74,28 +58,15 @@ def get_gvcf_trio(wildcards):
     }
 
 
-def get_bam_path(sample):
-    return "{sample}/fq2bam/duplicates_marked.bam".format(sample=sample)
-
-
-def get_bam_trio(wildcards):
-    trio = pedigree.loc[(wildcards.trio), ["p1", "p2", "p3"]].dropna()
-    return {
-        "bam1": get_bam_path(trio.p1),
-        "bam2": get_bam_path(trio.p2),
-        "bam3": get_bam_path(trio.p3),
-    }
-
-
 def get_sample_results(samples, results):
     suffixes = {
-        "panel_filter_vcf": [
-            "vcf",
-        ],
         "haplotypecaller": [
-            "vcf",
+            "panel.vcf",
             "variant_calling_detail_metrics",
             "variant_calling_summary_metrics",
+        ],
+        "manta": [
+            "panel.vcf",
         ],
         "mosdepth": [
             "mosdepth.global.dist.txt",
@@ -103,7 +74,10 @@ def get_sample_results(samples, results):
             "mosdepth.summary.txt",
             "regions.bed.gz",
             "regions.bed.gz.csi",
-        ]
+        ],
+        "tiddit": [
+            "panel.vcf",
+        ],
     }
     for key in suffixes.keys():
         results = results + expand(
@@ -117,7 +91,6 @@ def get_sample_results(samples, results):
 
 def get_results(wildcards):
     results = expand("{trio}/snpeff/{trio}_annotated.{ext}", trio=pedigree.index, ext=["vcf", "html"])
-    results = expand("{trio}/manta/results/variants/diploidSV.vcf.gz", trio=pedigree.index)
     results = results + expand("{sample}/fastqc", sample=samples.index)
     results = get_sample_results(samples.index, results)
     return results
